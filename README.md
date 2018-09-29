@@ -18,6 +18,10 @@ npm install --save @zoli-fischer/uploader
 // TODO
 ```
 
+## Demo
+
+https://zoli-fischer.github.io/uploader/
+
 ## License
 
 MIT © [zoli-fischer](https://github.com/zoli-fischer)
