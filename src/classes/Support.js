@@ -1,4 +1,4 @@
-import Element from "./Element";
+import Query from "./Query";
 
 export default class Support {
     constructor() {
@@ -10,7 +10,7 @@ export default class Support {
             '|(Windows Phone (OS 7|8\\.0))|(XBLWP)|(ZuneWP)|(WPDesktop)' +
             '|(w(eb)?OSBrowser)|(webOS)' +
             '|(Kindle/(1\\.0|2\\.[05]|3\\.0))'
-        ).test(window.navigator.userAgent) || Element.create('<input type="file" />').disabled)
+        ).test(window.navigator.userAgent) || Query('<input type="file" />').prop('disabled'))
 
         // The FileReader API is not actually used, but works as feature detection,
         // as some Safari versions (5?) support XHR file uploads via the FormData API,
@@ -19,8 +19,5 @@ export default class Support {
         // window.ProgressEvent instead to detect XHR2 file upload capability:
         this.xhrFileUpload = !!(window.ProgressEvent && window.FileReader)
         this.xhrFormDataFileUpload = !!window.FormData
-
-        // Detect support for Blob slicing (required for chunked uploads):
-        this.blobSlice = window.Blob && (Blob.prototype.slice || Blob.prototype.webkitSlice || Blob.prototype.mozSlice)
     }
 }

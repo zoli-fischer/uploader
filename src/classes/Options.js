@@ -4,6 +4,7 @@ export default class Options {
             // The drop target element(s), by the default the complete document.
             // Set to null to disable drag & drop support:
             dropZone: document,
+            /*
             // The paste target element(s), by the default the complete document.
             // Set to null to disable paste support:
             pasteZone: document,
@@ -77,8 +78,10 @@ export default class Options {
             progressInterval: 100,
             // Interval in milliseconds to calculate progress bitrate:
             bitrateInterval: 500,
+            */
             // By default, uploads are started automatically when adding files:
             autoUpload: true,
+            multiple: true,
         }, options);
         Object.keys(optionsList).forEach(key => {
             this[key] = optionsList[key]
