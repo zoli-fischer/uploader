@@ -7,20 +7,23 @@ module.exports = {
         path: path.resolve(__dirname, 'build'),
         filename: './js/index.js',
     },
-    entry: __dirname + '/src/index.js',
+    entry: path.resolve(__dirname, 'src/index.jsx'),
     plugins: [
         new CleanWebpackPlugin(['build']),
-        new HtmlWebpackPlugin({ template: __dirname + '/public/index.html' }),
+        new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public/index.html') }),
     ],
     mode: 'development',
+    resolve: {
+        extensions: ['.webpack.js', '.web.js', '.js', '.json', '.jsx'],
+    },
     module: {
         rules: [
             {
                 test: /\.css$/,
                 use: [
                     'style-loader',
-                    'css-loader'
-                ]
+                    'css-loader',
+                ],
             },
             {
                 test: /\.less$/,
@@ -33,13 +36,13 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: ['babel-loader']
+                use: ['babel-loader'],
             },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: ['babel-loader', 'eslint-loader']
-            }
+                use: ['babel-loader', 'eslint-loader'],
+            },
         ],
     },
-}
+};

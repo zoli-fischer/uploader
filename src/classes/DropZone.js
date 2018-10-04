@@ -1,7 +1,16 @@
-import Query from "./Query";
+import Query from './Query';
+import Events from './Events';
 
-export default class DropZone {
+const events = [
+    'drop',
+    'dragenter',
+    'dragleave',
+    'dragover',
+];
+
+export default class DropZone extends Events {
     constructor(options) {
+        super(events);
         this.options = Object.assign({
             elements: null,
         }, options);
@@ -28,70 +37,77 @@ export default class DropZone {
         }
     }
 
+    destroy() {
+        this.clearElements();
+    }
+
     _onDrop(event) {
-        const dataTransfer = event.dataTransfer;
+        const { dataTransfer } = event;
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             this._getDroppedFiles(dataTransfer).then(files => {
-                console.log(files);
+                this.trigger('drop', event, files);
             });
         }
     }
 
     _onDragOver(event) {
-        const dataTransfer = event.dataTransfer;
+        const { dataTransfer } = event;
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
+            this.trigger('dragover', event);
         }
     }
 
     _onDragLeave(event) {
-        const dataTransfer = event.dataTransfer;
+        const { dataTransfer } = event;
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = '';
+            this.trigger('dragleave', event);
         }
     }
 
     _onDragEnter(event) {
-        const dataTransfer = event.dataTransfer;
+        const { dataTransfer } = event;
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
+            this.trigger('dragenter', event);
         }
     }
 
     _getDroppedFiles(dataTransfer) {
         dataTransfer = dataTransfer || {};
-        const items = dataTransfer.items;
+        const { items } = dataTransfer;
         if (items && items.length && (items[0].webkitGetAsEntry || items[0].getAsEntry)) {
             const itemsList = [];
             Object.values(items).forEach(item => {
                 const entry = item.webkitGetAsEntry() || item.getAsEntry();
                 entry._file = item.getAsFile();
                 itemsList.push(entry);
-            })
+            });
             return this._handleFileTreeEntries(itemsList);
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             resolve(dataTransfer.files);
         });
     }
 
     _handleFileTreeEntries(entries, path) {
-        var promises = [];
+        const promises = [];
         entries.forEach(entry => {
             promises.push(this._handleFileTreeEntry(entry, path));
         });
 
-        const promise = Promise.all(promises)
+        const promise = Promise.all(promises);
         return promise.then(files => {
             const _files = [];
             files.forEach(file => {
                 if (file instanceof Array) {
-                    file.forEach(file => {
-                        _files.push(file);
+                    file.forEach(_file => {
+                        _files.push(_file);
                     });
                 } else {
                     _files.push(file);
@@ -103,13 +119,13 @@ export default class DropZone {
 
     _handleFileTreeEntry(entry, path) {
         path = path || '';
-        return new Promise((resolve, reject) => {
-            const errorHandler = function (e) {
+        return new Promise((resolve) => {
+            const errorHandler = e => {
                 if (e && !e.entry) {
                     e.entry = entry;
                 }
                 resolve(e);
-            }
+            };
 
             if (entry.isFile) {
                 if (entry._file) {
@@ -127,13 +143,13 @@ export default class DropZone {
                 dirReader.readEntries(entries => {
                     this._handleFileTreeEntries(
                         entries,
-                        path + entry.name + '/'
+                        path + entry.name + '/',
                     ).then(files => {
                         const _files = [];
                         files.forEach(file => {
                             if (file instanceof Array) {
-                                file.forEach(file => {
-                                    _files.push(file);
+                                file.forEach(_file => {
+                                    _files.push(_file);
                                 });
                             } else {
                                 _files.push(file);
@@ -145,5 +161,4 @@ export default class DropZone {
             }
         });
     }
-
 }

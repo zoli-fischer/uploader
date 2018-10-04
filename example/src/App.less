@@ -1,0 +1,65 @@
+.uploadHolder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.dropZone {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background:rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 200ms ease-in-out, visibility 200ms ease-in-out;
+    transition: opacity 200ms ease-in-out, visibility 200ms ease-in-out;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    > div {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        bottom: 20px;
+        right: 20px;
+        border: 5px dashed #ffffff;
+        color: #ffffff;
+
+        > p {
+            width: 100%;
+            font-size: 32px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+        }
+    }
+}
+
+.filesHolder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    margin: 0 auto;
+    width: 80%;
+    max-width: 460px;
+    text-align: center;
+}
+
+.uploadButton {
+    display: block;
+    margin: 0 auto;
+}

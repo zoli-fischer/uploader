@@ -84,7 +84,7 @@ export default class Options {
             multiple: true,
         }, options);
         Object.keys(optionsList).forEach(key => {
-            this[key] = optionsList[key]
+            this[key] = optionsList[key];
         });
     }
 }

@@ -1,4 +1,4 @@
-import Query from "./Query";
+import Query from './Query';
 
 export default class FileInput {
     constructor(options) {
@@ -9,7 +9,7 @@ export default class FileInput {
         this.$input = this.$form.find('input');
         this.$form.appendTo(this.form);
 
-        this.$input.on('change', (e) => {
+        this.$input.on('change', () => {
             this.getFileInputFiles();
         });
 
@@ -17,7 +17,7 @@ export default class FileInput {
     }
 
     multiple(...args) {
-        if (args.length == 1) {
+        if (args.length === 1) {
             this.options.multiple = args[0];
         }
         this.$input.prop('multiple', this.options.multiple === true ? this.options.multiple : undefined);
@@ -30,32 +30,8 @@ export default class FileInput {
 
     getFileInputFiles() {
         const entries = this.$input.prop('webkitEntries') || this.$input.prop('entries');
-        const files = this.$input[0].files;
+        const { files } = this.$input[0];
         console.log(entries);
         console.log(files);
-        /*
-            value;
-        if (entries && entries.length) {
-            return this._handleFileTreeEntries(entries);
-        }
-        files = $.makeArray(fileInput.prop('files'));
-        if (!files.length) {
-            value = fileInput.prop('value');
-            if (!value) {
-                return $.Deferred().resolve([]).promise();
-            }
-            // If the files property is not available, the browser does not
-            // support the File API and we add a pseudo File object with
-            // the input value as name with path information removed:
-            files = [{ name: value.replace(/^.*\\/, '') }];
-        } else if (files[0].name === undefined && files[0].fileName) {
-            // File normalization for Safari 4 and Firefox 3:
-            $.each(files, function (index, file) {
-                file.name = file.fileName;
-                file.size = file.fileSize;
-            });
-        }
-        return $.Deferred().resolve(files).promise();
-        */
     }
 }
