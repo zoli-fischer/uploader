@@ -31,7 +31,7 @@ class QueryObject {
             }
             if (element instanceof Element && !document.body.contains(element)) {
                 document.body.appendChild(element);
-                element.remove();
+                element.parentNode.removeChild(element);
             }
         });
         this.length = this.elements.length;
@@ -69,7 +69,7 @@ class QueryObject {
 
     detach() {
         Object.values(this.elements).forEach(element => {
-            element.remove();
+            element.parentNode.removeChild(element);
         });
         return this;
     }

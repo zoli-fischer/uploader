@@ -1,7 +1,18 @@
 {
-    "presets": [
-        [
-            "env"
-        ]
-    ]
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 11"]
+      },
+      "useBuiltIns": "entry"
+    }]
+  ],
+  "ignore": [
+    "node_modules"
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-object-assign",
+    "transform-object-entries"
+  ]
 }

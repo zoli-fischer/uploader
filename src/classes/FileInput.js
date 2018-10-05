@@ -1,7 +1,13 @@
 import Query from './Query';
+import Events from './Events';
 
-export default class FileInput {
+const events = [
+    'files-added',
+];
+
+export default class FileInput extends Events {
     constructor(options) {
+        super(events);
         this.options = Object.assign({
             multiple: true,
         }, options);
@@ -29,9 +35,10 @@ export default class FileInput {
     }
 
     getFileInputFiles() {
-        const entries = this.$input.prop('webkitEntries') || this.$input.prop('entries');
-        const { files } = this.$input[0];
-        console.log(entries);
-        console.log(files);
+        const files = [];
+        for (let i = 0; i < this.$input[0].files.length; i++) {
+            files.push(this.$input[0].files[i]);
+        }
+        this.trigger('files-added', files);
     }
 }

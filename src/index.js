@@ -38,10 +38,15 @@ export default class Uploader extends Events {
     }
 
     _setEvents() {
-        ['drop', 'dragenter', 'dragleave', 'dragover'].forEach(event => {
+        this.DropZone.events().forEach(event => {
             this.DropZone.on(event, (...args) => {
-                this.trigger.apply(this, [...[event], ...args]);
+                this.trigger.apply(this, args);
             });
+        });
+
+        this.fileInput.on('files-added', (event, files) => {
+            console.log('files');
+            console.log(files);
         });
     }
 

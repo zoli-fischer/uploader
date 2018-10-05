@@ -46,7 +46,7 @@ export default class DropZone extends Events {
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             this._getDroppedFiles(dataTransfer).then(files => {
-                this.trigger('drop', event, files);
+                this.trigger(event, files);
             });
         }
     }
@@ -56,7 +56,7 @@ export default class DropZone extends Events {
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
-            this.trigger('dragover', event);
+            this.trigger(event, event);
         }
     }
 
@@ -65,7 +65,7 @@ export default class DropZone extends Events {
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = '';
-            this.trigger('dragleave', event);
+            this.trigger(event, event);
         }
     }
 
@@ -74,7 +74,7 @@ export default class DropZone extends Events {
         if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
-            this.trigger('dragenter', event);
+            this.trigger(event, event);
         }
     }
 

@@ -1,3 +1,18 @@
+
+function _CustomEvent(type, bubbles = true, cancelable = true, detail = {}) {
+    /*
+    if (typeof document.createEvent === 'undefined') {
+        return new CustomEvent(type, {
+            bubbles,
+            cancelable,
+        });
+    }
+    */
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, bubbles, cancelable, detail);
+    return event;
+}
+
 export default class Events {
     constructor(events) {
         this._events = [];
@@ -43,23 +58,30 @@ export default class Events {
 
     trigger(...args) {
         if (args.length > 0) {
-            const event = args[0];
-            if (typeof this._callbacks[event] !== 'undefined') {
-                const newEvent = new CustomEvent(event, {
+            let event;
+            if (typeof args[0] === 'object') {
+                let { type } = args[0];
+                let originalEvent = args[0];
+                if (args[0] instanceof Array) {
+                    type = args[0][0];
+                    originalEvent = args[0][1];
+                }
+                event = _CustomEvent(type, {
                     bubbles: false,
                     cancelable: true,
                 });
-                newEvent.originalEvent = typeof args[1] !== 'undefined' ? args[1] : {};
-
-                if (args.length >= 2) {
-                    args.shift();
-                    args.shift();
-                } else {
-                    args.shift();
-                }
-                args.unshift(newEvent);
-
-                this._callbacks[event].forEach(fn => {
+                event.originalEvent = originalEvent;
+            } else {
+                event = _CustomEvent(args[0], {
+                    bubbles: false,
+                    cancelable: true,
+                });
+                event.originalEvent = null;
+            }
+            if (typeof this._callbacks[event.type] !== 'undefined') {
+                args.shift();
+                args.unshift(event);
+                this._callbacks[event.type].forEach(fn => {
                     fn.apply(this, args);
                 });
             }
