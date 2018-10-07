@@ -1,4 +1,4 @@
-import Query from './Query';
+import $ from 'jqry';
 
 export default class Support {
     constructor() {
@@ -10,7 +10,7 @@ export default class Support {
             + '|(Windows Phone (OS 7|8\\.0))|(XBLWP)|(ZuneWP)|(WPDesktop)'
             + '|(w(eb)?OSBrowser)|(webOS)'
             + '|(Kindle/(1\\.0|2\\.[05]|3\\.0))',
-        ).test(window.navigator.userAgent) || Query('<input type="file" />').prop('disabled'));
+        ).test(window.navigator.userAgent) || $('<input type="file" />').prop('disabled'));
 
         // The FileReader API is not actually used, but works as feature detection,
         // as some Safari versions (5?) support XHR file uploads via the FormData API,
@@ -19,5 +19,10 @@ export default class Support {
         // window.ProgressEvent instead to detect XHR2 file upload capability:
         this.xhrFileUpload = !!(window.ProgressEvent && window.FileReader);
         this.xhrFormDataFileUpload = !!window.FormData;
+    }
+
+    isDragAndDrop() {
+        const div = $('<div></div>')[0];
+        return !(/Trident\/7./ig.test(window.navigator.userAgent)) && (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div));
     }
 }

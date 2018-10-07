@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.jsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server",
-    "build": "./node_modules/webpack/bin/webpack.js"
+    "test": "cross-env echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env webpack-dev-server",
+    "build": "cross-env ./node_modules/webpack/bin/webpack.js"
   },
   "author": "",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.0",
+    "cross-env": "^5.2.0",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-loader": "^2.1.1",

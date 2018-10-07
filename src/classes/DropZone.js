@@ -1,4 +1,4 @@
-import Query from './Query';
+import $ from 'jqry';
 import Events from './Events';
 
 const events = [
@@ -21,7 +21,7 @@ export default class DropZone extends Events {
     setElements(elements) {
         this.clearElements();
         this.options.elements = elements;
-        this.elements = Query(this.options.elements);
+        this.elements = $(this.options.elements);
         this.elements.on('drop', this._onDrop.bind(this));
         this.elements.on('dragover', this._onDragOver.bind(this));
         this.elements.on('dragleave', this._onDragLeave.bind(this));
@@ -43,7 +43,7 @@ export default class DropZone extends Events {
 
     _onDrop(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             this._getDroppedFiles(dataTransfer).then(files => {
                 this.trigger(event, files);
@@ -53,7 +53,7 @@ export default class DropZone extends Events {
 
     _onDragOver(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
             this.trigger(event, event);
@@ -62,7 +62,7 @@ export default class DropZone extends Events {
 
     _onDragLeave(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = '';
             this.trigger(event, event);
@@ -71,7 +71,7 @@ export default class DropZone extends Events {
 
     _onDragEnter(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && dataTransfer.types.indexOf('Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
             this.trigger(event, event);

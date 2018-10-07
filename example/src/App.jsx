@@ -7,6 +7,7 @@ class App extends AutoState {
     constructor(props) {
         super(props);
         this.state = {
+            isDrop: true,
             showDropZone: false,
         };
     }
@@ -14,16 +15,20 @@ class App extends AutoState {
     componentDidMount() {
         this.uploader = new Uploader();
 
-        this.uploader.on('drop', (e, files) => {
-            console.log(files);
-            this.setState({ showDropZone: false });
-        });
-        this.uploader.on('dragover', () => {
-            this.setState({ showDropZone: true });
-        });
-        this.uploader.on('dragleave', () => {
-            this.setState({ showDropZone: false });
-        });
+        if (!this.uploader.support.isDragAndDrop()) {
+            this.setState({ isDrop: false });
+        } else {
+            this.uploader.on('drop', (e, files) => {
+                console.log(files);
+                this.setState({ showDropZone: false });
+            })
+            .on('dragover', () => {
+                this.setState({ showDropZone: true });
+            })
+            .on('dragleave', () => {
+                this.setState({ showDropZone: false });
+            });
+        }
     }
 
     render() {
@@ -31,7 +36,7 @@ class App extends AutoState {
             <div className="uploadHolder">
                 <div className="filesHolder">
                     <button className="uploadButton" type="button" onClick={() => this.uploader.select()}>Click here to select files</button>
-                    <p><small>or drag and drop files and/or folders here</small></p>
+                    <p style={{display: this.state.isDrop ? 'block' : 'none'}}><small>or drag and drop files and/or folders here</small></p>
                 </div>
                 <div className={'dropZone ' + (this.state.showDropZone ? 'show' : '')}>
                     <div>

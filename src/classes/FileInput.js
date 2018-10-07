@@ -1,4 +1,4 @@
-import Query from './Query';
+import $ from 'jqry';
 import Events from './Events';
 
 const events = [
@@ -11,7 +11,7 @@ export default class FileInput extends Events {
         this.options = Object.assign({
             multiple: true,
         }, options);
-        this.$form = Query('<form style="position: fixed; left: -10000px; top: -10000px; visibility: hidden;"><input type="file" /></form>');
+        this.$form = $('<form style="position: fixed; left: -10000px; top: -10000px; visibility: hidden;"><input type="file" /></form>');
         this.$input = this.$form.find('input');
         this.$form.appendTo(this.form);
 

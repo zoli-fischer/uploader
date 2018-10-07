@@ -1,17 +1,4 @@
-
-function _CustomEvent(type, bubbles = true, cancelable = true, detail = {}) {
-    /*
-    if (typeof document.createEvent === 'undefined') {
-        return new CustomEvent(type, {
-            bubbles,
-            cancelable,
-        });
-    }
-    */
-    const event = document.createEvent('CustomEvent');
-    event.initCustomEvent(type, bubbles, cancelable, detail);
-    return event;
-}
+import $ from 'jqry';
 
 export default class Events {
     constructor(events) {
@@ -27,7 +14,7 @@ export default class Events {
     appendEvents(events) {
         if (events instanceof Array) {
             events.forEach(event => {
-                if (this._events.indexOf() === -1) {
+                if ($.indexOf(this._events, event) === -1) {
                     this._events.push(event);
                     this._callbacks[event] = [];
                 }
@@ -45,7 +32,7 @@ export default class Events {
     off(event, fn) {
         if (typeof this._callbacks[event] !== 'undefined') {
             if (typeof fn !== 'undefined') {
-                const index = this._callbacks[event].indexOf(fn);
+                const index = $.indexOf(this._callbacks[event], fn);
                 if (index > -1) {
                     this._callbacks[event].splice(index, 1);
                 }
@@ -66,13 +53,13 @@ export default class Events {
                     type = args[0][0];
                     originalEvent = args[0][1];
                 }
-                event = _CustomEvent(type, {
+                event = $.CustomEvent(type, {
                     bubbles: false,
                     cancelable: true,
                 });
                 event.originalEvent = originalEvent;
             } else {
-                event = _CustomEvent(args[0], {
+                event = $.CustomEvent(args[0], {
                     bubbles: false,
                     cancelable: true,
                 });
