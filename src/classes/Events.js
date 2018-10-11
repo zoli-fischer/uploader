@@ -1,4 +1,4 @@
-import $ from 'jqry';
+import Obj from './Obj';
 
 export default class Events {
     constructor(events) {
@@ -14,7 +14,7 @@ export default class Events {
     appendEvents(events) {
         if (events instanceof Array) {
             events.forEach(event => {
-                if ($.indexOf(this._events, event) === -1) {
+                if (Obj.indexOf(this._events, event) === -1) {
                     this._events.push(event);
                     this._callbacks[event] = [];
                 }
@@ -32,7 +32,7 @@ export default class Events {
     off(event, fn) {
         if (typeof this._callbacks[event] !== 'undefined') {
             if (typeof fn !== 'undefined') {
-                const index = $.indexOf(this._callbacks[event], fn);
+                const index = Obj.indexOf(this._callbacks[event], fn);
                 if (index > -1) {
                     this._callbacks[event].splice(index, 1);
                 }
@@ -53,13 +53,13 @@ export default class Events {
                     type = args[0][0];
                     originalEvent = args[0][1];
                 }
-                event = $.CustomEvent(type, {
+                event = Events.CustomEvent(type, {
                     bubbles: false,
                     cancelable: true,
                 });
                 event.originalEvent = originalEvent;
             } else {
-                event = $.CustomEvent(args[0], {
+                event = Events.CustomEvent(args[0], {
                     bubbles: false,
                     cancelable: true,
                 });
@@ -74,5 +74,21 @@ export default class Events {
             }
         }
         return this;
+    }
+
+    static CustomEvent(type, params = {}) {
+        params = Obj.assing({ bubbles: false, cancelable: false, detail: undefined }, params);
+
+        if (typeof window.CustomEvent === 'function') {
+            return new window.CustomEvent(type, params);
+        }
+
+        const CustomEvent = (type_, params_ = {}) => {
+            const event = document.createEvent('CustomEvent');
+            event.initCustomEvent(type, params_.bubbles, params_.cancelable, params_.detail);
+            return event;
+        };
+        CustomEvent.prototype = window.Event.prototype;
+        return CustomEvent(type, params);
     }
 }

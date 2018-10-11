@@ -1,4 +1,3 @@
-import $ from 'jqry';
 import Events from './Events';
 
 const events = [
@@ -11,13 +10,16 @@ export default class FileInput extends Events {
         this.options = Object.assign({
             multiple: true,
         }, options);
-        this.$form = $('<form style="position: fixed; left: -10000px; top: -10000px; visibility: hidden;"><input type="file" /></form>');
-        this.$input = this.$form.find('input');
-        this.$form.appendTo(this.form);
-
-        this.$input.on('change', () => {
-            this.getFileInputFiles();
-        });
+        this.form = document.createElement('form');
+        this.form.style.position = 'fixed';
+        this.form.style.left = '-10000px';
+        this.form.style.top = '-10000px';
+        this.form.style.visibility = 'hidden';
+        this.input = document.createElement('input');
+        this.input.type = 'file';
+        this.form.appendChild(this.input);
+        document.body.appendChild(this.form);
+        this.input.addEventListener('change', () => { this.getFileInputFiles(); }, false);
 
         this.multiple(this.options.multiple);
     }
@@ -26,18 +28,18 @@ export default class FileInput extends Events {
         if (args.length === 1) {
             this.options.multiple = args[0];
         }
-        this.$input.prop('multiple', this.options.multiple === true ? this.options.multiple : undefined);
-        return this.$input.prop('multiple');
+        this.input.multiple = this.options.multiple === true ? this.options.multiple : undefined;
+        return this.input.multiple;
     }
 
     open() {
-        this.$input.click();
+        this.input.click();
     }
 
     getFileInputFiles() {
         const files = [];
-        for (let i = 0; i < this.$input[0].files.length; i++) {
-            files.push(this.$input[0].files[i]);
+        for (let i = 0; i < this.input.files.length; i++) {
+            files.push(this.input.files[i]);
         }
         this.trigger('files-added', files);
     }

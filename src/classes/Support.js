@@ -1,7 +1,8 @@
-import $ from 'jqry';
-
 export default class Support {
     constructor() {
+        const input = document.createElement('input');
+        input.type = 'file';
+
         // Detect file input support, based on
         // http://viljamis.com/blog/2012/file-upload-support-on-mobile/
         this.fileInput = !(new RegExp(
@@ -10,7 +11,7 @@ export default class Support {
             + '|(Windows Phone (OS 7|8\\.0))|(XBLWP)|(ZuneWP)|(WPDesktop)'
             + '|(w(eb)?OSBrowser)|(webOS)'
             + '|(Kindle/(1\\.0|2\\.[05]|3\\.0))',
-        ).test(window.navigator.userAgent) || $('<input type="file" />').prop('disabled'));
+        ).test(window.navigator.userAgent) || input.disabled);
 
         // The FileReader API is not actually used, but works as feature detection,
         // as some Safari versions (5?) support XHR file uploads via the FormData API,
@@ -22,7 +23,7 @@ export default class Support {
     }
 
     isDragAndDrop() {
-        const div = $('<div></div>')[0];
+        const div = document.createElement('div');
         return !(/Trident\/7./ig.test(window.navigator.userAgent)) && (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div));
     }
 }

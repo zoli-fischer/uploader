@@ -1,5 +1,5 @@
-import $ from 'jqry';
 import Events from './Events';
+import Obj from './Obj';
 
 const events = [
     'drop',
@@ -21,19 +21,28 @@ export default class DropZone extends Events {
     setElements(elements) {
         this.clearElements();
         this.options.elements = elements;
-        this.elements = $(this.options.elements);
-        this.elements.on('drop', this._onDrop.bind(this));
-        this.elements.on('dragover', this._onDragOver.bind(this));
-        this.elements.on('dragleave', this._onDragLeave.bind(this));
-        this.elements.on('dragenter', this._onDragEnter.bind(this));
+        this.elements = this.options.elements;
+        Obj.values(this.elements instanceof Array ? this.elements : [this.elements]).forEach((element) => {
+            if (element.addEventListener) {
+                element.addEventListener('drop', this._onDrop.bind(this), false);
+                element.addEventListener('dragover', this._onDragOver.bind(this), false);
+                element.addEventListener('dragleave', this._onDragLeave.bind(this), false);
+                element.addEventListener('dragenter', this._onDragEnter.bind(this), false);
+            }
+        });
     }
 
     clearElements() {
+        this.elements = this.options.elements;
         if (this.elements) {
-            this.elements.off('drop', this._onDrop);
-            this.elements.off('dragover', this._onDragOver);
-            this.elements.off('dragleave', this._onDragLeave);
-            this.elements.off('dragenter', this._onDragEnter);
+            Obj.values(this.elements instanceof Array ? this.elements : [this.elements]).forEach((element) => {
+                if (element.removeEventListener) {
+                    element.removeEventListener('drop', this._onDrop.bind(this));
+                    element.removeEventListener('dragover', this._onDragOver.bind(this));
+                    element.removeEventListener('dragleave', this._onDragLeave.bind(this));
+                    element.removeEventListener('dragenter', this._onDragEnter.bind(this));
+                }
+            });
         }
     }
 
@@ -43,7 +52,7 @@ export default class DropZone extends Events {
 
     _onDrop(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && Obj.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             this._getDroppedFiles(dataTransfer).then(files => {
                 this.trigger(event, files);
@@ -53,7 +62,7 @@ export default class DropZone extends Events {
 
     _onDragOver(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && Obj.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
             this.trigger(event, event);
@@ -62,7 +71,7 @@ export default class DropZone extends Events {
 
     _onDragLeave(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && Obj.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = '';
             this.trigger(event, event);
@@ -71,7 +80,7 @@ export default class DropZone extends Events {
 
     _onDragEnter(event) {
         const { dataTransfer } = event;
-        if (dataTransfer && typeof dataTransfer.types === 'object' && $.indexOf(dataTransfer.types, 'Files') !== -1) {
+        if (dataTransfer && typeof dataTransfer.types === 'object' && Obj.indexOf(dataTransfer.types, 'Files') !== -1) {
             event.preventDefault();
             dataTransfer.dropEffect = 'copy';
             this.trigger(event, event);
