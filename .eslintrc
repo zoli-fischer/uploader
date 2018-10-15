@@ -55,10 +55,7 @@
         "global-require": 0,
         "react/no-unused-prop-types": [2, { "skipShapeProps": true }],
         "prefer-destructuring": ["error", {"object": true, "array": false}],
-        "prefer-spread": 0,
-        "filenames/match-regex": [2, "^[a-z_]+$", true],
-        "filenames/match-exported": 2,
-        "filenames/no-index": 2
+        "prefer-spread": 0
     },
     "plugins": [
         "react",

@@ -11,7 +11,7 @@ const events = [
 export default class DropZone extends Events {
     constructor(options) {
         super(events);
-        this.options = Object.assign({
+        this.options = Obj.assign({
             elements: null,
         }, options);
 

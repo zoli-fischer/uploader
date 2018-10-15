@@ -1,4 +1,5 @@
 import Events from './Events';
+import Obj from './Obj';
 
 const events = [
     'files-added',
@@ -7,7 +8,7 @@ const events = [
 export default class FileInput extends Events {
     constructor(options) {
         super(events);
-        this.options = Object.assign({
+        this.options = Obj.assign({
             multiple: true,
         }, options);
         this.form = document.createElement('form');

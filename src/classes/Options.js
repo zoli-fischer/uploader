@@ -2,7 +2,7 @@ import Obj from './Obj';
 
 export default class Options {
     constructor(options) {
-        const optionsList = Obj.assing({
+        const optionsList = Obj.assign({
             // The drop target element(s), by the default the complete document.
             // Set to null to disable drag & drop support:
             dropZone: document,
@@ -24,7 +24,7 @@ export default class Options {
             */
             // By default, uploads are started automatically when adding files:
             autoUpload: true,
-            multiple: false,
+            multiple: true,
         }, options);
         Obj.keys(optionsList).forEach(key => {
             this[key] = optionsList[key];
