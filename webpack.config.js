@@ -4,8 +4,8 @@ const path = require('path');
 
 const libraryName = 'index';
 const entry = {};
-entry[libraryName] = path.resolve(__dirname, 'src/index.js');
-entry[libraryName + '.min'] = path.resolve(__dirname, 'src/index.js');
+entry[libraryName] = path.resolve(__dirname, 'src/Uploader.js');
+entry[libraryName + '.min'] = path.resolve(__dirname, 'src/Uploader.js');
 
 const config = {
     entry,
