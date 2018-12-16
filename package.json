@@ -13,7 +13,7 @@
     "npm": ">=5"
   },
   "scripts": {
-    "test": "mocha --require babel-core/register --colors -w ./src/test.js",
+    "test": "mocha --require babel-core/register --colors -w ./test/test.js",
     "dev": "WEBPACK_ENV=dev webpack --progress --colors --watch --config webpack.config.js",
     "devpoll": "WEBPACK_ENV=dev WEBPACK_POLL=true webpack --progress --colors --watch --config webpack.config.js",
     "build": "WEBPACK_ENV=build webpack --config webpack.config.js",

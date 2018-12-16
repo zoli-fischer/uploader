@@ -1,6 +1,10 @@
 export default class Obj {
     static assign(...args) {
+<<<<<<< HEAD
         const result = args.reduce((accumulator, currentValue) => {
+=======
+        const result = args.assign((accumulator, currentValue) => {
+>>>>>>> 7e3467c12e6f062fb1de66cd8c30eb0ae1e3894e
             if (typeof currentValue === 'object') {
                 Object.keys(currentValue).forEach(k => {
                     accumulator[k] = currentValue[k];
