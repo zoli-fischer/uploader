@@ -1,4 +1,4 @@
-# under work - please do not user until final release - @zoli-fischer/uploader
+# under work - please do not use this until final release - @zoli-fischer/uploader
 
 > JavaScript class for handling file/data upload
 
