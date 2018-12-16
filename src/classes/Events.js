@@ -77,7 +77,7 @@ export default class Events {
     }
 
     static CustomEvent(type, params = {}) {
-        params = Obj.assing({ bubbles: false, cancelable: false, detail: undefined }, params);
+        params = Obj.assign({ bubbles: false, cancelable: false, detail: undefined }, params);
 
         if (typeof window.CustomEvent === 'function') {
             return new window.CustomEvent(type, params);

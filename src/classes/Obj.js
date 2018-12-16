@@ -1,5 +1,5 @@
 export default class Obj {
-    static assing(...args) {
+    static assign(...args) {
         const result = args.reduce((accumulator, currentValue) => {
             if (typeof currentValue === 'object') {
                 Object.keys(currentValue).forEach(k => {

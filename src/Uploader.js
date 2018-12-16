@@ -23,6 +23,8 @@ export default class Uploader extends Events {
             elements: this.options.dropZone,
         });
 
+        this.files = [];
+
         this._setEvents();
         console.log(this.options);
         console.log(this.support);
@@ -34,20 +36,53 @@ export default class Uploader extends Events {
     }
 
     select() {
+        this.fileInput.directory(false);
+        this.fileInput.open();
+    }
+
+    selectFolder() {
+        this.fileInput.directory(true);
         this.fileInput.open();
     }
 
     _setEvents() {
         this.DropZone.events().forEach(event => {
             this.DropZone.on(event, (...args) => {
-                this.trigger.apply(this, args);
+                if (event !== 'drop') {
+                    this.trigger.apply(this, args);
+                }
             });
         });
 
-        this.fileInput.on('files-added', (event, files) => {
-            console.log('files');
-            console.log(files);
+        this.DropZone.on('drop', (event, files) => {
+            const _files = this._parseFiles(files);
+            this.trigger('drop', _files);
+            this._addFiles(_files);
         });
+
+        this.fileInput.on('files-added', (event, files) => {
+            const _files = this._parseFiles(files);
+            this._addFiles(_files);
+        });
+    }
+
+    _parseFiles(files) {
+        return files.map(file => {
+            let relativePath = file.relativePath || file.relativepath || file.webkitRelativePath;
+            const relativePathParts = relativePath.split('/');
+            if (relativePathParts.length > 1) {
+                relativePathParts.pop();
+            }
+            relativePath = relativePathParts.join('/') + '/';
+            relativePath = relativePath === '/' ? '' : relativePath;
+            file.relativePath = relativePath;
+            return file;
+        });
+    }
+
+    _addFiles(files) {
+        this.files = [...this.files, ...files];
+        console.log(this.files);
     }
 
     _clearEvents() {

@@ -25,12 +25,15 @@ export default class FileInput extends Events {
         this.multiple(this.options.multiple);
     }
 
-    multiple(...args) {
-        if (args.length === 1) {
-            this.options.multiple = args[0];
-        }
-        this.input.multiple = this.options.multiple === true ? this.options.multiple : undefined;
+    multiple(value = true) {
+        this.input.multiple = value ? true : false; // eslint-disable-line no-unneeded-ternary
         return this.input.multiple;
+    }
+
+    directory(value = true) {
+        this.input.webkitdirectory = value ? true : false; // eslint-disable-line no-unneeded-ternary
+        this.input.directory = value ? true : false; // eslint-disable-line no-unneeded-ternary
+        return this.input.directory;
     }
 
     open() {
@@ -40,6 +43,7 @@ export default class FileInput extends Events {
     getFileInputFiles() {
         const files = [];
         for (let i = 0; i < this.input.files.length; i++) {
+            this.input.files[i].relativepath = this.input.files[i].webkitRelativePath;
             files.push(this.input.files[i]);
         }
         this.trigger('files-added', files);
